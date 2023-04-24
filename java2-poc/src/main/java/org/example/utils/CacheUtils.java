@@ -1,7 +1,7 @@
 package org.example.utils;
 
 
-import org.example.domain.UserDTO;
+import org.example.domain.User;
 
 import javax.ejb.Stateless;
 import java.util.HashMap;
@@ -12,21 +12,21 @@ import java.util.logging.Logger;
 public class CacheUtils {
 
     private static final java.util.logging.Logger LOGGER = Logger.getLogger(CacheUtils.class.toString());
-    private Map<Integer, UserDTO> userMap;
+    private Map<Integer, User> userMap;
 
     {
         userMap = loadCache();
     }
 
-    public UserDTO getUser(int idUser) {
+    public User getUser(int idUser) {
         LOGGER.info("Getting user info from cache" + idUser);
         return userMap.get(idUser);
     }
 
-    private Map<Integer, UserDTO> loadCache() {
-        userMap = new HashMap<Integer, UserDTO>();
-        userMap.put(1, new UserDTO(1, "Jhonathan", 4)); //User libranza tradicional
-        userMap.put(2, new UserDTO(2, "Alexis", 25)); //User libranza especial
+    private Map<Integer, User> loadCache() {
+        userMap = new HashMap<Integer, User>();
+        userMap.put(1, new User(1, "Jhonathan", 4)); //User libranza tradicional
+        userMap.put(2, new User(2, "Alexis", 25)); //User libranza especial
         return userMap;
     }
 

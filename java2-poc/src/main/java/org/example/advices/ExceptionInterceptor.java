@@ -1,7 +1,7 @@
 package org.example.advices;
 
 import org.example.annotations.ExceptionLogger;
-import org.example.domain.UserDTO;
+import org.example.domain.User;
 import org.example.utils.CacheUtils;
 import org.example.interfaces.Logger;
 
@@ -25,7 +25,7 @@ public class ExceptionInterceptor implements Serializable {
     public Object computeLatency(InvocationContext invocationCtx) throws Exception {
 
         //Getting traditional user from cache
-        UserDTO user = cacheUtils.getUser(1);
+        User user = cacheUtils.getUser(1);
 
         //Type of user
         user.getUserType();

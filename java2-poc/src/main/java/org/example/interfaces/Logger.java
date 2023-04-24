@@ -1,8 +1,8 @@
 package org.example.interfaces;
 
-import org.example.domain.UserDTO;
+import org.example.domain.User;
 
 public interface Logger {
 
-    void sendLog(UserDTO userDTO);
+    void sendLog(User user);
 }
