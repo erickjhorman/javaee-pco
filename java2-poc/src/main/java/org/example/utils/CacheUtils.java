@@ -19,7 +19,7 @@ public class CacheUtils {
     }
 
     public User getUser(int idUser) {
-        LOGGER.info("Getting user info from cache" + idUser);
+        //LOGGER.info("Getting user info from cache" + idUser);
         return userMap.get(idUser);
     }
 

@@ -15,7 +15,7 @@ public class ControllerUser {
 
     @GET
     @Path("users")
-    public String workerEnter1() {
+    public String getUsers() {
         userService.getAllPeople();
         return "Getting people";
     }

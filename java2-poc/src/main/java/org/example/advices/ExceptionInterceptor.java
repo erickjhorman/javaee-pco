@@ -15,6 +15,9 @@ import java.io.Serializable;
 @ExceptionLogger
 public class ExceptionInterceptor implements Serializable {
 
+    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(ExceptionInterceptor.class.toString());
+
+
     @Inject
     private CacheUtils cacheUtils;
 
@@ -23,16 +26,24 @@ public class ExceptionInterceptor implements Serializable {
 
     @AroundInvoke
     public Object computeLatency(InvocationContext invocationCtx) throws Exception {
+        StringBuilder stringBuilder = new StringBuilder();
+        Object proceed = null;
+        int i = 1;
+        while(i <= 2) {
+            //Getting traditional user from cache
+            User user = cacheUtils.getUser(i);
 
-        //Getting traditional user from cache
-        User user = cacheUtils.getUser(1);
+            //Type of user
+            String userType = user.getUserType() == 4 ? "libranza tradicional": "libranza especial";
+            LOGGER.info("Getting traditional user from cache. " + stringBuilder.append(user.getUsername()).append(" es ").append(userType));
 
-        //Type of user
-        user.getUserType();
-
-        //Sending log to kinesis
-        loggerKinesis.sendLog(user);
-
-        return invocationCtx.proceed();
+            //Sending log to kinesis
+            loggerKinesis.sendLog(user);
+            LOGGER.info("Sending log to kinesis");
+            i++;
+            proceed = invocationCtx.proceed();
+            stringBuilder.setLength(0);
+        }
+        return proceed;
     }
 }
