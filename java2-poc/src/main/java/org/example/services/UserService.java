@@ -1,15 +1,14 @@
-package org.example.servicesimpl;
+package org.example.services;
 
-import org.example.advices.SupervisorBeforeAdvice;
 import org.example.annotations.LatencyLogger;
 
 import javax.ejb.Stateless;
 import java.util.logging.Logger;
 
 @Stateless
-public class User {
+public class UserService {
 
-    private static final Logger LOGGER = Logger.getLogger(User.class.toString());
+    private static final Logger LOGGER = Logger.getLogger(UserService.class.toString());
 
 
     @LatencyLogger
