@@ -1,6 +1,6 @@
 package org.example.services;
 
-import org.example.annotations.LatencyLogger;
+import org.example.annotations.ExceptionLogger;
 
 import javax.ejb.Stateless;
 import java.util.logging.Logger;
@@ -9,9 +9,7 @@ import java.util.logging.Logger;
 public class UserService {
 
     private static final Logger LOGGER = Logger.getLogger(UserService.class.toString());
-
-
-    @LatencyLogger
+    @ExceptionLogger
     public void getAllPeople() {
         LOGGER.info("here in getAllPeople");
     }

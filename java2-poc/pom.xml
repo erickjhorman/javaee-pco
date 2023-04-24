@@ -38,6 +38,19 @@
           </exclusions>
           <version>2.0</version>
       </dependency>
+
+      <!-- Utils -->
+      <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <version>1.18.26</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <version>1.7.26</version>
+      </dependency>
     <!-- testing -->
       <dependency>
           <groupId>junit</groupId>
