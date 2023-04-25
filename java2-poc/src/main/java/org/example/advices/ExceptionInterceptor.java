@@ -2,6 +2,7 @@ package org.example.advices;
 
 import org.example.annotations.ExceptionLogger;
 import org.example.domain.User;
+import org.example.exception.ErrorResponseDTO;
 import org.example.utils.CacheUtils;
 import org.example.interfaces.Logger;
 
@@ -25,24 +26,30 @@ public class ExceptionInterceptor implements Serializable {
     private Logger loggerKinesis;
 
     @AroundInvoke
-    public Object computeLatency(InvocationContext invocationCtx) throws Exception {
+    public Object loggerException(InvocationContext invocationCtx) throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
-        Object proceed = null;
-        int i = 1;
-        while(i <= 2) {
-            //Getting traditional user from cache
-            User user = cacheUtils.getUser(i);
+        Object proceed;
+        int userId = (Integer) invocationCtx.getParameters()[0];
+        //Getting traditional user from cache
+        User user = cacheUtils.getUser(userId);
 
+        try {
             //Type of user
-            String userType = user.getUserType() == 4 ? "libranza tradicional": "libranza especial";
-            LOGGER.info("Getting traditional user from cache. " + stringBuilder.append(user.getUsername()).append(" es ").append(userType));
+            LOGGER.info("Running logic in interceptor");
+            String userType = user.getUserType() == 4 ? "libranza tradicional" : "libranza especial";
+            LOGGER.info("Getting user from cache en el metodo. " + " " + invocationCtx.getMethod().getName() +
+                    stringBuilder.append(user.getUsername()).append(" es ").append(userType));
 
+            stringBuilder.setLength(0);
+            proceed = invocationCtx.proceed();
+
+        } catch (Exception e) {
             //Sending log to kinesis
             loggerKinesis.sendLog(user);
-            LOGGER.info("Sending log to kinesis");
-            i++;
-            proceed = invocationCtx.proceed();
-            stringBuilder.setLength(0);
+            LOGGER.info("Sending log to kinesis from catch block from initial method" + e.getMessage());
+            ErrorResponseDTO errorSentToFront = new ErrorResponseDTO("Error sent to front", e, user.getUsername(), String.valueOf(user.getUserType()));
+            LOGGER.info("error response details" + errorSentToFront);
+            throw new ErrorResponseDTO("Error sent to front", e, user.getUsername(), String.valueOf(user.getUserType()));
         }
         return proceed;
     }

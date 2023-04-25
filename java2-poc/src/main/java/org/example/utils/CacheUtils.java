@@ -25,8 +25,8 @@ public class CacheUtils {
 
     private Map<Integer, User> loadCache() {
         userMap = new HashMap<Integer, User>();
-        userMap.put(1, new User(1, "Jhonathan", 4)); //User libranza tradicional
-        userMap.put(2, new User(2, "Alexis", 25)); //User libranza especial
+        userMap.put(4, new User(1, "Jhonathan", 4)); //User libranza tradicional
+        userMap.put(25, new User(2, "Alexis", 25)); //User libranza especial
         return userMap;
     }
 
