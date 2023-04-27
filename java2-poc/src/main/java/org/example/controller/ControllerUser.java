@@ -1,6 +1,5 @@
 package org.example.controller;
 
-import org.example.annotations.ExceptionLogger;
 import org.example.services.UserService;
 
 import javax.ejb.Stateless;
@@ -9,7 +8,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-//@ExceptionLogger
 @Path("/users")
 @Stateless
 public class ControllerUser {
@@ -22,5 +20,4 @@ public class ControllerUser {
         userService.getAllPeople(userId);
         return "Getting people";
     }
-
 }

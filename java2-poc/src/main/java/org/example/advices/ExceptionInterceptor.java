@@ -16,8 +16,8 @@ import java.io.Serializable;
 @ExceptionLogger
 public class ExceptionInterceptor implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(ExceptionInterceptor.class.toString());
-
 
     @Inject
     private CacheUtils cacheUtils;
@@ -28,29 +28,23 @@ public class ExceptionInterceptor implements Serializable {
     @AroundInvoke
     public Object loggerException(InvocationContext invocationCtx) throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
-        Object proceed;
-        int userId = (Integer) invocationCtx.getParameters()[0];
-        //Getting traditional user from cache
-        User user = cacheUtils.getUser(userId);
-
         try {
+            return invocationCtx.proceed();
+        } catch (Exception e) {
+            int userId = (Integer) invocationCtx.getParameters()[0];
+            //Getting traditional user from cache
+            User user = cacheUtils.getUser(userId);
             //Type of user
             LOGGER.info("Running logic in interceptor");
             String userType = user.getUserType() == 4 ? "libranza tradicional" : "libranza especial";
             LOGGER.info("Getting user from cache en el metodo. " + " " + invocationCtx.getMethod().getName() +
                     stringBuilder.append(user.getUsername()).append(" es ").append(userType));
-
             stringBuilder.setLength(0);
-            proceed = invocationCtx.proceed();
 
-        } catch (Exception e) {
             //Sending log to kinesis
             loggerKinesis.sendLog(user);
             LOGGER.info("Sending log to kinesis from catch block from initial method" + e.getMessage());
-            ErrorResponseDTO errorSentToFront = new ErrorResponseDTO("Error sent to front", e, user.getUsername(), String.valueOf(user.getUserType()));
-            LOGGER.info("error response details" + errorSentToFront);
             throw new ErrorResponseDTO("Error sent to front", e, user.getUsername(), String.valueOf(user.getUserType()));
         }
-        return proceed;
     }
 }

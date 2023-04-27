@@ -28,6 +28,11 @@ public class UserService {
         int result = 5 / 0;
     }
 
+    public void callingExternalErrorService() {
+        LOGGER.info("Running normal method logic approvedCredit2 in UserService");
+
+    }
+
    /* public void saveUser() {
         String test = null;
         try {
